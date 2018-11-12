@@ -1,3 +1,4 @@
+Order history looks like:
 GET /orders?page=1,count=10
 
 The BC json looks like:
@@ -75,6 +76,8 @@ The BC json looks like:
 	"errors": [],
 	"errorMessage": null
 }
+
+like BC the aggregate can be seperated into another API, or maybe not. just seperate the code and no need to add an extra HTTP call.
 what I think the json will look like:
 {
   "total_orders": 11,
@@ -105,6 +108,7 @@ what I think the json will look like:
 
 GET /orders?search="Baba"&status="submitted,accepted"&supplier_id=23&employee_id=23,start_date=123213123&end_date=123123
 
+Place order looks like:
 POST /order
 get product data so the user can select the orders:
 {
@@ -160,6 +164,193 @@ get product data so the user can select the orders:
 		"isPriceByWeight": false,
 		"weightUnit": "null",
 		"originalPrice": 165.0
+	}],
+	"notes": [],
+	"warnings": [],
+	"errors": [],
+	"errorMessage": null
+}
+
+Also a seperate or included json for associated vendors:
+here is the entire table data for the associated vendor (no clue why they are dumping the entire json in the frontend):
+{
+	"id": 16553532,
+	"creationDate": 1521531527000,
+	"createdBy": "feraasd@gmail.com",
+	"lastUpdatedDate": 1531478995000,
+	"lastUpdatedBy": "(system)",
+	"name": "Baba Dairy",
+	"description": null,
+	"phone": null,
+	"address": null,
+	"city": null,
+	"state": null,
+	"zip": null,
+	"locationIdCode": null,
+	"locationIdName": null,
+	"webPage": null,
+	"imageName": "16553532.PNG",
+	"ein": null,
+	"enabled": "Y",
+	"deleted": null,
+	"agreedTerms": "N",
+	"termsVersion": null,
+	"termsFile": null,
+	"termsAgreedTime": null,
+	"agreedUser": null,
+	"billingEmail": null,
+	"displayCurrency": "USD",
+	"currencySymbol": "$",
+	"businessStartDate": null,
+	"deliveryArea": 0,
+	"deliveryTime": 0,
+	"pitch": null,
+	"ownerFirstName": null,
+	"pocFirstName": "Amar",
+	"buyerRestrictions": null,
+	"ownerLastName": null,
+	"ownerPhone": null,
+	"ownerEmail": null,
+	"pocLastName": "Bhullar",
+	"pocPhone": null,
+	"pocEmail": "babadairy@mailinator.com",
+	"token": null,
+	"minOrder": 0.0,
+	"deliveryDays": "1111111",
+	"deliveryCharge": null,
+	"deliveryThresholdAmount": 0.0,
+	"deliveryThresholdFlag": "Y",
+	"productAutoSubscriptionFlag": null,
+	"orderCutoffTimeFloatType": null,
+	"imageUrl": "https://s3.amazonaws.com/impimages/prod/all/98af6377-159b-424e-9858-ffebbbd2b737",
+	"notifyStandingOrdersFlag": "Y",
+	"showAllProductsFlag": false,
+	"autoAcceptInvites": true,
+	"achEnabled": false,
+	"ccEnabled": false,
+	"checkEnabled": false,
+	"billingStatementTerms": null,
+	"paymentProcessingStatus": null,
+	"paymentReminderDays": null,
+	"vertical": null,
+	"ghostClientIds": [16553369],
+	"billingStandardNote": null,
+	"orderStandardNote": null,
+	"tagsConfirmedOn": null,
+	"uploadedCatalogFileName": null,
+	"uploadedCatalogFileUrl": null,
+	"standingOrderAutoFillDeliveryDate": false,
+	"paymentProcessor": null,
+	"orderCutoffTime": null,
+	"deliveryDaysText": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
+	"ecommerceLink": null,
+	"deliveryProfile": {
+		"id": 2481,
+		"profileName": "Default Profile",
+		"vendorId": 16553532,
+		"deliveryArea": null,
+		"deliveryCharge": null,
+		"deliveryThresholdAmount": null,
+		"deliveryDays": "1111111",
+		"minOrder": 0.0,
+		"orderCutoffTimeFloatType": null,
+		"description": null,
+		"isDefault": true,
+		"creationDate": 1521531527000,
+		"lastUpdatedDate": 1521531527000,
+		"orderCutoffTimezone": null,
+		"driverId": null,
+		"warehouseAddressId": null,
+		"estimatedDepartureHour": 8,
+		"estimatedDepartureMinutes": 30,
+		"departureTimeZone": "EST",
+		"estimatedDropOffTimeInMinutes": 20,
+		"createdBy": "system",
+		"lastUpdatedBy": null,
+		"reminderCutoffTimeInMinutes": 60,
+		"isReqDeliveryDateRequired": false,
+		"isOrderMinRequired": false,
+		"isPrepaymentRequired": null,
+		"isOrderCutoffRequired": false,
+		"dayRelativeOfDelivery": null,
+		"reminderEnabled": false,
+		"isDeleted": null,
+		"hideRequestedDeliveryDate": false,
+		"orderMinMode": "none",
+		"orderCutOffMode": "none",
+		"orderCutoffTimeMilliseconds": null,
+		"deliveryDaysText": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
+		"deliveryDaysList": [1, 2, 3, 4, 5, 6, 7],
+		"clientsAssignedToProfile": null,
+		"newAndRemovedClients": null,
+		"hasProfileInfoChanged": null,
+		"deliveryThresholdFlag": false,
+		"orderCutoffTime": null
+	},
+	"salesRep": null,
+	"types": [],
+	"settings": null,
+	"geoLocation": null,
+	"categoriesList": null,
+	"connectWithPricing": true,
+	"active": true,
+	"currency": "USD $"
+}
+
+do a post of per item to update cart:
+POST /apiv2/cart/updatecartwithresponse/
+[{
+	"updated_by": "feraasd@gmail.com",
+	"product_id": 26835558,
+	"quantity": 2,
+	"note": ""
+}]
+
+a seperate GET API that gets the cart:
+apiv2/cart/?noCache=1542016584618
+{
+	"data": [{
+		"creationDate": "2018-11-12",
+		"createdBy": "feraasd@gmail.com",
+		"price": 98.0,
+		"productId": 26837749,
+		"productName": "BABY CORN",
+		"uom": "kg",
+		"sku": "12",
+		"vendorId": 26837724,
+		"isPriceByWeight": false,
+		"originalPrice": 98.0,
+		"clientId": 16553369,
+		"quantity": 1.0,
+		"customPrice": 0.0
+	}, {
+		"creationDate": "2018-11-12",
+		"createdBy": "feraasd@gmail.com",
+		"price": 788.0,
+		"productId": 26836661,
+		"productName": "BACON",
+		"uom": "kg",
+		"sku": "160241002",
+		"vendorId": 26836656,
+		"isPriceByWeight": false,
+		"originalPrice": 788.0,
+		"clientId": 16553369,
+		"quantity": 3.0,
+		"customPrice": 0.0
+	}, {
+		"creationDate": "2018-11-12",
+		"createdBy": "feraasd@gmail.com",
+		"price": 336.0,
+		"productId": 26835558,
+		"productName": "Amul Pizza Cheese",
+		"uom": "kg",
+		"sku": "0406000",
+		"vendorId": 26835556,
+		"isPriceByWeight": false,
+		"originalPrice": 336.0,
+		"clientId": 16553369,
+		"quantity": 2.0,
+		"customPrice": 0.0
 	}],
 	"notes": [],
 	"warnings": [],
