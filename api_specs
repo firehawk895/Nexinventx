@@ -2577,4 +2577,115 @@ apiv2/products/clientProducts?
 	"errors": [],
 	"errorMessage": null
 }
+------------------------------
+so after doing a post on an item on the cart, it calls getcart again to refresh cart items. pretty easy that way.
+------------------------------
+CHECKOUT PAGE:
+
+cool insight: the checkout page is not calculated in the backend, but the same getcart API is used to render shit in the front end. including subtotals.
+
+apiv2/customers/shippingaddress/16553369
+this API loads the shipping address:
+{
+	"id": 20089037,
+	"clientId": 16553369,
+	"address1": "15B",
+	"address2": "Masjid Moth",
+	"city": "NEW DELHI",
+	"state": "AR",
+	"zip": "71630",
+	"countryCode": "USA",
+	"enabled": true,
+	"creationDate": 1528655494000,
+	"lastUpdatedDate": null,
+	"createdBy": "feraasd@gmail.com",
+	"lastUpdatedBy": "feraasd@gmail.com",
+	"addressStatus": "notValidated",
+	"addressErrorCode": "validationNotRequested",
+	"addressNotes": null,
+	"addressWarnings": null,
+	"addressErrors": null,
+	"addressApiWarnings": null
+}
+
+/apiv2/generalOptions/currencies
+currencies:
+[{
+	"id": "USD",
+	"value": "USD Dollar",
+	"symbol": "$"
+}, {
+	"id": "EUR",
+	"value": "Euro",
+	"symbol": "€"
+}, {
+	"id": "CAD",
+	"value": "Canadian Dollar",
+	"symbol": "$"
+}, {
+	"id": "GBP",
+	"value": "British Pound",
+	"symbol": "£"
+}, {
+	"id": "MXN",
+	"value": "Mexican Peso",
+	"symbol": "$"
+}]
+--------------------------------------------------------------------
+Now lets place an individual order:
+-------------------------
+POST apiv2/orders/new
+
+this API can take multiple request payloads for the "Send all orders" button
+request payload:
+note that the product details are being sent again in the request payload because the quantity can still be changed at this level and new products can be added.
+you cannot take the backend cart and process the orders further. the request payload must have all details.
+after I sent out this Jagat singh guy's order, If i do a back to see my cart again.
+I see the cart no longer has jagat singhs products. only the other 2 out of 3 vendors products are remaining. so sending an order partially clears the cart.
+reqDD is requested delivery date i guess or type.
+{
+	"os_version": "Web",
+	"user_id": 16553368,
+	"client_id": 16553369,
+	"app_version": "Web",
+	"device_id": "Web",
+	"device_version": "Web",
+	"data": [{
+		"delivery_charge": 0,
+		"vendor_name": "sbs",
+		"reqDD": null,
+		"comment": null,
+		"vendor_id": "26836656",
+		"products": [{
+			"product_id": "26836661",
+			"quantity": 3,
+			"vendor_id": "26836656",
+			"price": 788,
+			"created": null
+		}]
+	}, {
+		"delivery_charge": 0,
+		"vendor_name": "ORGANO FRESH",
+		"reqDD": null,
+		"comment": null,
+		"vendor_id": "26837724",
+		"products": [{
+			"product_id": "26837749",
+			"quantity": 1,
+			"vendor_id": "26837724",
+			"price": 98,
+			"created": null
+		}, {
+			"product_id": "26837753",
+			"quantity": 1,
+			"vendor_id": "26837724",
+			"price": 165,
+			"created": null
+		}]
+	}]
+}
+
+Reponse:
+[{"vendorId":26836656,"vendorName":"sbs","orderId":27522275},{"vendorId":26837724,"vendorName":"ORGANO FRESH","orderId":27522276}]
+
 
